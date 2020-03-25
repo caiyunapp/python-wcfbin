@@ -123,7 +123,7 @@ class Record(object):
                         last_el.attributes.append(obj)
                     else:
                         records.append(obj)
-                    log.debug('Value: %s' % str(obj))
+                    # log.debug('Value: %s' % str(obj))
                 elif type-1 in Record.records:
                     log.debug('%s with end element found (0x%x)' %
                             (Record.records[type-1].__name__, type))
