@@ -4,7 +4,7 @@ python:
     - "3.7"
     - "3.8"
 install:
-    - pip install pytest
-    - pip install -e .
+    - pip install poetry
+    - poetry install
 script:
     - pytest tests/

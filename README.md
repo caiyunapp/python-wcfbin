@@ -9,6 +9,9 @@ A more complete documentation could be found in the doc directory (build with sp
 ```sh
 # Install from GitHub
 pip install git+https://github.com/caiyunapp/python-wcfbin.git@0.5.4#egg=wcf-binary-parser
+
+# Install from PyPi
+pip install wcf
 ```
 
 ## About
