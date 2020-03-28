@@ -31,6 +31,7 @@ from __future__ import unicode_literals
 
 try:
     import __builtin__  # noqa
+
     is_py2 = True
 except ImportError:
     is_py2 = False
@@ -63,8 +64,7 @@ class ShortElementRecord(Element):
         """
         string = Utf8String(self.name)
 
-        bt = (super(ShortElementRecord, self).to_bytes() +
-              string.to_bytes())
+        bt = super(ShortElementRecord, self).to_bytes() + string.to_bytes()
 
         for attr in self.attributes:
             bt += attr.to_bytes()
@@ -72,10 +72,10 @@ class ShortElementRecord(Element):
 
     def __str__(self):
         # return '<%s[name=%s]>' % (type(self).__name__, self.name)
-        attribs = ' '.join([str(a) for a in self.attributes])
+        attribs = " ".join([str(a) for a in self.attributes])
         if attribs:
-            attribs = ' ' + attribs
-        return '<%s%s>' % (self.name, attribs)
+            attribs = " " + attribs
+        return "<%s%s>" % (self.name, attribs)
 
     @classmethod
     def parse(cls, fp):
@@ -108,10 +108,10 @@ class ElementRecord(ShortElementRecord):
         return bytes(type + pref.to_bytes() + data[1:])
 
     def __str__(self):
-        attribs = ' '.join([str(a) for a in self.attributes])
+        attribs = " ".join([str(a) for a in self.attributes])
         if attribs:
-            attribs = ' ' + attribs
-        return '<%s:%s%s>' % (self.prefix, self.name, attribs)
+            attribs = " " + attribs
+        return "<%s:%s%s>" % (self.prefix, self.name, attribs)
 
     @classmethod
     def parse(cls, fp):
@@ -137,10 +137,10 @@ class ShortDictionaryElementRecord(Element):
         self.name = dictionary[self.index]
 
     def __str__(self):
-        attribs = ' '.join([str(a) for a in self.attributes])
+        attribs = " ".join([str(a) for a in self.attributes])
         if attribs:
-            attribs = ' ' + attribs
-        return '<%s%s>' % (self.name, attribs)
+            attribs = " " + attribs
+        return "<%s%s>" % (self.name, attribs)
 
     def to_bytes(self):
         """
@@ -149,8 +149,7 @@ class ShortDictionaryElementRecord(Element):
         """
         string = MultiByteInt31(self.index)
 
-        bt = (super(ShortDictionaryElementRecord, self).to_bytes() +
-              string.to_bytes())
+        bt = super(ShortDictionaryElementRecord, self).to_bytes() + string.to_bytes()
 
         for attr in self.attributes:
             bt += attr.to_bytes()
@@ -184,10 +183,10 @@ class DictionaryElementRecord(Element):
         >>> str(DictionaryElementRecord('x', 2))
         '<x:Envelope>'
         """
-        attribs = ' '.join([str(a) for a in self.attributes])
+        attribs = " ".join([str(a) for a in self.attributes])
         if attribs:
-            attribs = ' ' + attribs
-        return '<%s:%s%s>' % (self.prefix, self.name, attribs)
+            attribs = " " + attribs
+        return "<%s:%s%s>" % (self.prefix, self.name, attribs)
 
     def to_bytes(self):
         """
@@ -197,9 +196,11 @@ class DictionaryElementRecord(Element):
         pref = Utf8String(self.prefix)
         string = MultiByteInt31(self.index)
 
-        bt = (super(DictionaryElementRecord, self).to_bytes() +
-              pref.to_bytes() +
-              string.to_bytes())
+        bt = (
+            super(DictionaryElementRecord, self).to_bytes()
+            + pref.to_bytes()
+            + string.to_bytes()
+        )
 
         for attr in self.attributes:
             bt += attr.to_bytes()
@@ -230,8 +231,7 @@ class PrefixElementRecord(ElementRecord):
         """
         string = Utf8String(self.name)
 
-        bt = (struct.pack(b'<B', self.type) +
-              string.to_bytes())
+        bt = struct.pack(b"<B", self.type) + string.to_bytes()
 
         for attr in self.attributes:
             bt += attr.to_bytes()
@@ -261,8 +261,7 @@ class PrefixDictionaryElementRecord(DictionaryElementRecord):
         """
         string = MultiByteInt31(self.index)
 
-        bt = (struct.pack(b'<B', self.type) +
-              string.to_bytes())
+        bt = struct.pack(b"<B", self.type) + string.to_bytes()
 
         for attr in self.attributes:
             bt += attr.to_bytes()
@@ -280,45 +279,33 @@ class PrefixDictionaryElementRecord(DictionaryElementRecord):
         return cls(index)
 
 
-Record.add_records((
+Record.add_records(
+    (
         ShortElementRecord,
         ElementRecord,
         ShortDictionaryElementRecord,
         DictionaryElementRecord,
-    ))
+    )
+)
 
 __module__ = sys.modules[__name__]
 __records__ = []
 
 for c in range(0x44, 0x5D + 1):
-    char = chr(c - 0x44 + ord('a'))
-    clsname = 'PrefixDictionaryElement' + char.upper() + 'Record'
+    char = chr(c - 0x44 + ord("a"))
+    clsname = "PrefixDictionaryElement" + char.upper() + "Record"
     if is_py2:
-        clsname = clsname.encode('latin1')
-    cls = type(
-           clsname,
-           (PrefixDictionaryElementRecord,),
-           dict(
-                type=c,
-                char=char,
-            )
-           )
+        clsname = clsname.encode("latin1")
+    cls = type(clsname, (PrefixDictionaryElementRecord,), dict(type=c, char=char,))
     setattr(__module__, clsname, cls)
     __records__.append(cls)
 
 for c in range(0x5E, 0x77 + 1):
-    char = chr(c - 0x5E + ord('a'))
-    clsname = 'PrefixElement' + char.upper() + 'Record'
+    char = chr(c - 0x5E + ord("a"))
+    clsname = "PrefixElement" + char.upper() + "Record"
     if is_py2:
-        clsname = clsname.encode('latin1')
-    cls = type(
-           clsname,
-           (PrefixElementRecord,),
-           dict(
-                type=c,
-                char=char,
-            )
-           )
+        clsname = clsname.encode("latin1")
+    cls = type(clsname, (PrefixElementRecord,), dict(type=c, char=char,))
     setattr(__module__, clsname, cls)
     __records__.append(cls)
 
