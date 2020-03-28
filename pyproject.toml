@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "wcf"
+version = "0.5.5"
+description = "A library for transforming wcf-binary data from and to xml"
+authors = [
+    "BlueC0re <coding@bluec0re.eu>",
+    "Timo Schmid <tschmid@ernw.de>",
+    "Timo Schmid <coding@bluec0re.eu>",
+    "Philip Tzou <philip.npc@gmail.com>",
+    "GSam <1924133+GSam@users.noreply.github.com>",
+    "Stefan Schmieta <sschmieta@axioma.com>",
+    "Danny Quist <daquist@bechtel.com>",
+    "takeshix <takeshix@adversec.com>",
+    "ringsaturn <ringsaturn.me@gmail.com>",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Topic :: Utilities",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+license = "BSD"
+readme = 'README.md'
+repository = "https://github.com/caiyunapp/python-wcfbin"
+keywords = ["wcf", "wcf.records", "tests"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+[tool.poetry.dev-dependencies]
+pytest = "=5.0.0"
+twine = "^2.0"
+
+[build-system]
+requires = ["intreehooks"]
+build-backend = "intreehooks:loader"
+
+[tool.intreehooks]
+build-backend = "poetry.masonry.api"
