@@ -9,16 +9,10 @@
 # character data -- the normal case), RCDATA (replaceable character
 # data -- only char and entity references and end tags are special)
 # and CDATA (character data -- only end tags are special).
-from __future__ import unicode_literals
 
-from builtins import chr
-
-try:
-    import markupbase
-except ImportError:
-    import _markupbase as markupbase
-
+import _markupbase as markupbase
 import re
+from builtins import chr
 
 # Regular expressions used for parsing
 

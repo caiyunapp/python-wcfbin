@@ -26,33 +26,29 @@
 #  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-from __future__ import absolute_import, print_function, unicode_literals
 
-from builtins import str
-import sys
 import logging
+import sys
+from builtins import str
+
+from wcf.records.base import Element, EndElementRecord, Text
 
 log = logging.getLogger(__name__)
-
-from wcf.records.base import *
-from wcf.records.text import *
-from wcf.records.attributes import *
-from wcf.records.elements import *
 
 
 def print_records(records, skip=0, fp=None, first_call=True):
     """prints the given record tree into a file like object
-    
+
     :param records: a tree of record objects
     :type records: wcf.records.Record
     :param skip: start value for intending (Default: 0)
     :type skip: int
     :param fp: file like object to print to (Default: sys.stdout)
-    
+
     """
-    if records == None:
+    if records is None:
         return
-    if fp == None:
+    if fp is None:
         fp = sys.stdout
 
     was_el = False
@@ -81,7 +77,7 @@ def print_records(records, skip=0, fp=None, first_call=True):
 
 
 def repr_records(records, skip=0):
-    if records == None:
+    if records is None:
         return
 
     for r in records:

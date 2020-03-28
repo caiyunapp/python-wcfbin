@@ -26,28 +26,19 @@
 #  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-from __future__ import absolute_import
-from __future__ import unicode_literals
 
-try:
-    import __builtin__  # noqa
-
-    is_py2 = True
-except ImportError:
-    is_py2 = False
-from builtins import str, chr, bytes
-
-import struct
 import logging
+import struct
 import sys
+from builtins import bytes, chr, str
 
+from wcf.datatypes import MultiByteInt31, Utf8String
+from wcf.dictionary import dictionary
+from wcf.records.base import Attribute, Record
+
+is_py2 = False
 log = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
-
-from wcf.datatypes import *
-from wcf.records.base import *
-from wcf.records.text import *
-from wcf.dictionary import dictionary
 
 
 class ShortAttributeRecord(Attribute):

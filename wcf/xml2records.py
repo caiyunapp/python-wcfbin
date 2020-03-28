@@ -1,26 +1,59 @@
 #!/usr/bin/env python2
 # vim: set ts=4 sw=4 tw=79 fileencoding=utf-8:
 
-from __future__ import absolute_import
-
+import base64
+import datetime
+import logging
+import re
+import time
 from builtins import chr
 
+from wcf.attributes import ShortXmlnsAttributeRecord
+from wcf.dictionary import inverted_dict
 from wcf.MyHTMLParser import HTMLParser, interesting_cdata
-
-try:
-    from htmlentitydefs import name2codepoint
-except ImportError:
-    from html.entities import name2codepoint
-
-import re
-import base64
-import logging
+from wcf.records import (
+    AttributeRecord,
+    Bytes8TextRecord,
+    Bytes16TextRecord,
+    Bytes32TextRecord,
+    CommentRecord,
+    DateTimeTextRecord,
+    DictionaryAttributeRecord,
+    DictionaryElementRecord,
+    DictionaryTextRecord,
+    DictionaryXmlnsAttributeRecord,
+    DoubleTextRecord,
+    ElementRecord,
+    EmptyTextRecord,
+    FalseTextRecord,
+    Int8TextRecord,
+    Int16TextRecord,
+    Int32TextRecord,
+    Int64TextRecord,
+    OneTextRecord,
+    QNameDictionaryTextRecord,
+    Record,
+    ShortAttributeRecord,
+    ShortDictionaryAttributeRecord,
+    ShortDictionaryElementRecord,
+    ShortDictionaryXmlnsAttributeRecord,
+    ShortElementRecord,
+    TrueTextRecord,
+    UInt64TextRecord,
+    UnicodeChars8TextRecord,
+    UnicodeChars16TextRecord,
+    UnicodeChars32TextRecord,
+    UniqueIdTextRecord,
+    UuidTextRecord,
+    XmlnsAttributeRecord,
+    ZeroTextRecord,
+    base,
+    data,
+    dump_records,
+    ms,
+)
 
 log = logging.getLogger(__name__)
-
-from wcf.records import *
-from wcf.dictionary import inverted_dict
-
 
 classes = Record.records.values()
 classes = dict([(c.__name__, c) for c in classes])
@@ -151,9 +184,6 @@ class XMLParser(HTMLParser):
                 tz = 1 if len(tz[1]) else 2
             dt = t[0]
             dt = dt.split(".")
-            ns = 0
-            if len(dt) > 1:
-                ns = int(dt[1])
             dt = dt[0]
             if len(dt) == 10:
                 dt = datetime.datetime.strptime(dt, "%Y-%m-%d")
@@ -162,7 +192,6 @@ class XMLParser(HTMLParser):
             else:
                 dt = datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S")
 
-            base_diff = 62135596800.0
             dt = int((time.mktime(dt.timetuple()) - base) * 10 + ms)
 
             return DateTimeTextRecord(dt, tz)

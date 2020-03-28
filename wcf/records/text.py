@@ -26,20 +26,18 @@
 #  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 #  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-from __future__ import absolute_import, unicode_literals, division
 
-from builtins import str, chr, bytes, int
-
-import struct
 import base64
 import datetime
 import logging
+import struct
 import uuid
+from builtins import bytes, chr, int, str
+from html.entities import codepoint2name
 
-try:
-    from htmlentitydefs import codepoint2name
-except ImportError:
-    from html.entities import codepoint2name
+from wcf.datatypes import Decimal, MultiByteInt31
+from wcf.dictionary import dictionary
+from wcf.records.base import Record, Text
 
 
 def escapecp(cp):
@@ -55,10 +53,6 @@ def escape(text):
 
 log = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
-
-from wcf.datatypes import *
-from wcf.records.base import *
-from wcf.dictionary import dictionary
 
 
 class ZeroTextRecord(Text):
