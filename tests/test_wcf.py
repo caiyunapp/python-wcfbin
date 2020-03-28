@@ -3,7 +3,8 @@ import sys
 import unittest
 from codecs import decode
 
-from wcf.records import Record, attributes, base, dump_records, elements, text
+from wcf.records.base import Record
+from wcf.records import attributes, base, dump_records, elements, text
 
 sys.path.append("..")
 
